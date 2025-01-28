@@ -1,0 +1,5 @@
+Flask==3.1.0
+gunicorn==23.0.0
+PyYAML==6.0.2
+redis==5.2.1
+rq==2.1.0
