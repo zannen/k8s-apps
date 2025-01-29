@@ -1,0 +1,3 @@
+---
+dbPassword: 'base64-encoded data'
+apiVersion: "0.0.1"

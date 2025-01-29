@@ -1,0 +1,157 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: atestapp-passwords
+data:
+  dbPassword: {{ .Values.dbPassword }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiserver
+  labels:
+    app: atestapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiserver
+  template:
+    # no apiVersion or kind
+    metadata:
+      labels:
+        app: apiserver
+    spec:
+      containers:
+        - name: apiserver
+          image: "zannen/apiserver:{{.Values.apiVersion}}"
+          imagePullPolicy: Never
+          command:
+            - gunicorn
+            - --bind
+            - 0.0.0.0:80
+            - --access-logfile
+            - "-"  # Print to stdout
+            - --capture-output
+            - app:create_app()
+          env:
+            - name: DB_HOST
+              value: "db.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              value: root
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: atestapp-passwords
+                  key: dbPassword
+          ports:
+            - containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 12
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            failureThreshold: 2
+            periodSeconds: 60
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbserver
+  labels:
+    app: atestapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbserver
+  template:
+    # no apiVersion or kind
+    metadata:
+      labels:
+        app: dbserver
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.6
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: atestapp-passwords
+                  key: dbPassword
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  labels:
+    app: atestapp
+spec:
+  ports:
+    - protocol: TCP
+      targetPort: 80   # in container
+      port: 8880       # across cluster on ClusterIP
+      nodePort: 30880  # from outside cluster
+  selector:
+    app: apiserver
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  ports:
+    - port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: dbserver
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
