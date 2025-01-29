@@ -1,0 +1,9 @@
+---
+apiVersion: v2
+name: atestapp
+description: A Test App - Database server
+type: application
+# chart version
+version: 0.0.1
+# application version
+appVersion: "1.0.0"
