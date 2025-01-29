@@ -17,7 +17,7 @@ Get a minikube VM started, then:
 # Point your shell to minikube's docker-daemon:
 eval $(minikube docker-env)
 
-helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace
+helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace -f values.yaml
 ```
 
 # Getting pages on the webserver
