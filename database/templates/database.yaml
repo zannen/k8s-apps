@@ -4,7 +4,7 @@ kind: Secret
 metadata:
   name: atestapp-passwords
 data:
-  dbPassword: {{ .Values.dbPassword }}
+  dbPassword: {{.Values.dbPassword}}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,7 +37,7 @@ spec:
             - app:create_app()
           env:
             - name: DB_HOST
-              value: "db.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "db.{{.Release.Namespace}}.svc.cluster.local"
             - name: DB_PORT
               value: "3306"
             - name: DB_USER
