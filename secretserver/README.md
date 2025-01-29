@@ -22,7 +22,7 @@ eval $(minikube docker-env)
 # Ensure you have a secrets file.
 cp -a values-secret-SAMPLE.yaml values-secret.yaml
 
-# Build the webserver container:
+# Build the secretserver container:
 make docker
 
 helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace -f values.yaml -f values-secret.yaml
