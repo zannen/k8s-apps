@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: awebserver
+  labels:
+    app: atestapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atestapp-webserver
+  template:
+    # no apiVersion or kind
+    metadata:
+      labels:
+        app: atestapp-webserver
+    spec:
+      containers:
+        - name: awebserver
+          image: "zannen/webserver:{{.Values.webserverVersion}}"
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 6
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            periodSeconds: 5
+          volumeMounts:
+            - name: webcontent-persistent-storage
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: webcontent-persistent-storage
+          persistentVolumeClaim:
+            claimName: webcontent-pv-claim
