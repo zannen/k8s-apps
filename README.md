@@ -16,3 +16,6 @@ Implement a simple secret server, which takes secrets from `values-secret.yaml` 
 
 Implement a database server with persistent storage. See [`database`](/database/).
 
+## A webserver with a CronJob
+
+Implement a webserver with a CronJob that updates a webpage. See [`cronjob`](/cronjob/).

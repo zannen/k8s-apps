@@ -1,0 +1,27 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: update-webpage
+  labels:
+    app: atestapp
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: update-webpage
+              image: "zannen/cronjob:{{.Values.cronjobVersion}}"
+              imagePullPolicy: IfNotPresent
+              command:
+                - /usr/local/bin/update.sh
+              volumeMounts:
+                - name: webcontent-persistent-storage
+                  mountPath: /usr/share/nginx/html
+          volumes:
+            - name: webcontent-persistent-storage
+              persistentVolumeClaim:
+                claimName: webcontent-pv-claim
+          restartPolicy: OnFailure
