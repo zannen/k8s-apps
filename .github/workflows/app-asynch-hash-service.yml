@@ -37,7 +37,8 @@ jobs:
           venv="$tmpdir/venv"
           virtualenv "$venv"
           source "$venv/bin/activate"
-          pip install mypy types-requests
+          pip install -r requirements.txt
+          pip install -r test-requirements.txt
           cd asynch-hash-service/docker/apiserver
           mypy --ignore-missing-imports .
 
