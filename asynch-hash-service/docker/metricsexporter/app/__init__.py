@@ -5,8 +5,8 @@ Provide a Flask app
 import datetime
 import logging
 import os
-from typing import Dict, List
 import urllib.parse
+from typing import Dict, List
 
 import flask
 import redis
