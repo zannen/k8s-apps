@@ -48,6 +48,7 @@ jobs:
           pip install pylint
           cd database/docker/apiserver
           pip install -r requirements.txt
+          pip install -r test-requirements.txt
           ../../../.pylint.sh .
 
       - name: Tests
@@ -59,6 +60,7 @@ jobs:
           pip install pytest
           cd database/docker/apiserver
           pip install -r requirements.txt
+          pip install -r test-requirements.txt
           pip install -e .
           pytest
 
@@ -71,6 +73,7 @@ jobs:
           pip install coverage pytest
           cd database/docker/apiserver
           pip install -r requirements.txt
+          pip install -r test-requirements.txt
           pip install -e .
           coverage run -m pytest
           coverage report
