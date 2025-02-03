@@ -1,6 +1,6 @@
 ---
 
-name: Python
+name: App - Database
 
 "on":
   pull_request:
@@ -45,8 +45,9 @@ jobs:
           venv="$tmpdir/venv"
           virtualenv "$venv"
           source "$venv/bin/activate"
-          pip install -r requirements.txt
           pip install pylint
+          cd database/docker/apiserver
+          pip install -r requirements.txt
           ../../../.pylint.sh .
 
       - name: Tests
@@ -55,9 +56,9 @@ jobs:
           venv="$tmpdir/venv"
           virtualenv "$venv"
           source "$venv/bin/activate"
-          pip install -r requirements.txt
           pip install pytest
           cd database/docker/apiserver
+          pip install -r requirements.txt
           pip install -e .
           pytest
 
@@ -67,9 +68,9 @@ jobs:
           venv="$tmpdir/venv"
           virtualenv "$venv"
           source "$venv/bin/activate"
-          pip install -r requirements.txt
           pip install coverage pytest
           cd database/docker/apiserver
+          pip install -r requirements.txt
           pip install -e .
           coverage run -m pytest
           coverage report
