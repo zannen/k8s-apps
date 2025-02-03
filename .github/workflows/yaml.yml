@@ -7,6 +7,9 @@ name: YAML
     branches:
       - develop
       - main
+    paths:
+      - '**.yaml'
+      - '**.yml'
 
 jobs:
 

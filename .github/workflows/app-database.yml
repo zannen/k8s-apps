@@ -7,6 +7,8 @@ name: App - Database
     branches:
       - develop
       - main
+    paths:
+      - 'database/**'
 
 jobs:
 
