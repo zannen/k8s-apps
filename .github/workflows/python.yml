@@ -1,0 +1,57 @@
+---
+
+name: Python
+
+"on":
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install packages
+        run: |
+          sudo apt update
+          sudo env DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends python3-pip python3-virtualenv
+
+      - name: Lint with flake8
+        run: |
+          tmpdir="$(mktemp -d)"
+          venv="$tmpdir/venv"
+          virtualenv "$venv"
+          source "$venv/bin/activate"
+          pip install flake8
+          flake8 .
+
+      - name: Lint with black
+        run: |
+          tmpdir="$(mktemp -d)"
+          venv="$tmpdir/venv"
+          virtualenv "$venv"
+          source "$venv/bin/activate"
+          pip install black
+          black --check .
+
+      - name: Lint with isort
+        run: |
+          tmpdir="$(mktemp -d)"
+          venv="$tmpdir/venv"
+          virtualenv "$venv"
+          source "$venv/bin/activate"
+          pip install isort
+          isort --check .

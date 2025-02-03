@@ -29,9 +29,7 @@ def queue_func(*args, **kwargs):
     logging.basicConfig(format="[%(asctime)-15s] [%(levelname)s] %(message)s")
     logger = logging.getLogger("queue_func")
     logger.setLevel("INFO")
-    logger.info(
-        "Processing queue job with args=%s and kwargs=%s", args, kwargs
-    )
+    logger.info("Processing queue job with args=%s and kwargs=%s", args, kwargs)
     if "sleep" in kwargs:
         time.sleep(int(kwargs["sleep"]))
     return {

@@ -1,0 +1,9 @@
+[tool.black]
+line-length = 80
+exclude = '/(__pycache__|\.venv|\.egg-info|\.git|\.mypy_cache)/'
+
+[tool.isort]
+line_length = 80
+profile = "black"
+skip = []
+known_first_party= ["app"]

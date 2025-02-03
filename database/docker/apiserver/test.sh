@@ -6,6 +6,7 @@ if ! test -d "$venv" ; then
 	virtualenv "$venv"
 fi
 
+# shellcheck disable=SC1091
 source "$venv/bin/activate"
 echo "Installing venv"
 pip install -r requirements.txt 1>/dev/null
@@ -20,7 +21,7 @@ isort --check . || exit 1
 
 mypy --ignore-missing-imports . || exit 1
 
-../../../.pylint.sh app tests *.py || exit 1
+../../../.pylint.sh . || exit 1
 
 pytest || exit 1
 

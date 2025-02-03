@@ -41,6 +41,6 @@ def create_app(config={}):
         return {
             "error": err,
             "secret": secret,
-            }, 200
+        }, 200
 
     return app
