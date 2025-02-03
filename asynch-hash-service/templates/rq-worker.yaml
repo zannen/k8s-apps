@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rq-worker
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rq-worker
+  template:
+    metadata:
+      labels:
+        app: rq-worker
+    spec:
+      containers:
+        - name: rq-worker
+          image: "zannen/apiserver:{{.Values.apiserverVersion}}"
+          imagePullPolicy: Never
+          command:
+            - rq
+            - worker
+            - "{{.Values.redisQueue}}"  # queue name
+            - -w
+            - app.MyWorker
+            - --url
+            - "redis://redis-server.{{ .Release.Namespace }}.svc.cluster.local:6379"

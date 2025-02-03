@@ -19,3 +19,7 @@ Implement a database server with persistent storage. See [`database`](/database/
 ## A webserver with a CronJob
 
 Implement a webserver with a CronJob that updates a webpage. See [`cronjob`](/cronjob/).
+
+## Asynchronous Hash App
+
+Implement an app that calculates hashes asynchronously. See [`asynch-hash-service`](/asynch-hash-service/).

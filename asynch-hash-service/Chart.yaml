@@ -1,0 +1,9 @@
+---
+apiVersion: v2
+name: atestapp
+description: A Test App - An asynchronous hash service
+type: application
+# chart version
+version: 0.0.14
+# application version
+appVersion: "1.0.0"
