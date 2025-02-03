@@ -21,7 +21,7 @@ isort --check . || exit 1
 
 mypy --ignore-missing-imports . || exit 1
 
-../../../.pylint.sh app tests *.py || exit 1
+../../../.pylint.sh . || exit 1
 
 pytest || exit 1
 
