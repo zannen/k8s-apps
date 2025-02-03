@@ -3,7 +3,7 @@
 # Run pylint, collect output as json
 pylint --exit-zero --persistent=no -f json "$@" >.pylint.json
 
-jqcmd='[.[]|select(.type==$x)]|length'
+jqcmd="[.[]|select(.type==\$x)]|length"
 fatals="$(jq --arg x fatal "$jqcmd" .pylint.json)"
 errors="$(jq --arg x error "$jqcmd" .pylint.json)"
 warnings="$(jq --arg x warning "$jqcmd" .pylint.json)"
@@ -18,7 +18,12 @@ max_refactor=10
 max_convention=10
 max_usage=0
 
-pylint --exit-zero --persistent=no "$@"
+code=0
+if [[ "$fatals" -gt "$max_fatal" || "$errors" -gt "$max_error" || "$warnings" -gt "$max_warning" || "$refactors" -gt "$max_refactor" || "$conventions" -gt "$max_convention"  || "$usages" -gt "$max_usage" ]] ; then
+	code=1
+	pylint --exit-zero --persistent=no "$@"
+fi
+
 echo
 echo "Fatal: $fatals (max $max_fatal)"
 echo "Error: $errors (max $max_error)"
@@ -27,6 +32,4 @@ echo "Refactor: $refactors (max $max_refactor)"
 echo "Convention: $conventions (max $max_convention)"
 echo "Usage: $usages (max $max_usage)"
 
-if [[ "$fatals" -gt "$max_fatal" || "$fatals" -gt "$max_fatal" || "$errors" -gt "$max_error" || "$warnings" -gt "$max_warning" || "$refactor" -gt "$max_refactor" || "$conventions" -gt "$max_convention" ]] ; then
-	exit 1
-fi
+exit "$code"
