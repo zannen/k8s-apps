@@ -40,14 +40,14 @@ class Data(Base):
         return f"Data(id={self.id!r}, info='{self.info!r}')"
 
 
-def get_db(url: str):
+def get_db(url: sa.engine.url.URL) -> sa.engine.Engine:
     try:
         engine = sa.create_engine(url, echo=True)
-        if url.startswith("mysql+mysqldb:"):
+        if url.render_as_string().startswith("mysql+mysqldb:"):
             with engine.connect() as conn:
                 conn.execute(sa.text("CREATE DATABASE IF NOT EXISTS atestdb"))
                 conn.commit()
-            url += "/atestdb"
+            url = url.set(database="atestdb")
             engine = sa.create_engine(url, echo=True)
 
         with engine.connect() as conn:

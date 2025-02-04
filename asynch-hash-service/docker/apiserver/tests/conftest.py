@@ -59,7 +59,7 @@ def mock_redis_queue(queue: str, conn):
 def flask_app():
     config = {
         "TESTING": True,
-        "url": "sqlite+pysqlite:///:memory:",
+        "db_url": "sqlite+pysqlite:///:memory:",
     }
     test_flask_app = app.create_app(config)
     app.get_redis_queue = mock_redis_queue

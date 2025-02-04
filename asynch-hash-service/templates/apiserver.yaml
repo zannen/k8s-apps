@@ -31,12 +31,8 @@ spec:
             - app:create_app()
           env:
             # Database
-            - name: DB_HOST
-              value: "db.{{.Release.Namespace}}.svc.cluster.local"
-            - name: DB_PORT
-              value: "3306"
-            - name: DB_USER
-              value: root
+            - name: DB_URL
+              value: "mysql+mysqldb://root@db.{{.Release.Namespace}}.svc.cluster.local:3306"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:

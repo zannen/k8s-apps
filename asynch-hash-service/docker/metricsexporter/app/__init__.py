@@ -40,7 +40,7 @@ def queue_busy_workers(queue: str) -> List[str]:
     ]
 
 
-def create_metrics_exporter_app(config={}):
+def create_metrics_exporter_app(config: Optional[Dict[str, Any]] = None):
     """
     This function is called by gunicorn and creates a Flask app.
     """
