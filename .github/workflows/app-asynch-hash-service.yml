@@ -12,8 +12,11 @@ name: App - Asynch Hash Service
 
 jobs:
 
-  build:
+  apiserver:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./asynch-hash-service/docker/apiserver
     strategy:
       matrix:
         python-version: ["3.12"]
@@ -26,57 +29,31 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install packages
+      - name: Install packages and virtualenv
         run: |
           sudo apt update
           sudo env DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends python3-pip python3-virtualenv
-
-      - name: Type-check with mypy
-        run: |
           tmpdir="$(mktemp -d)"
           venv="$tmpdir/venv"
           virtualenv "$venv"
           source "$venv/bin/activate"
           pip install -r requirements.txt
           pip install -r test-requirements.txt
-          cd asynch-hash-service/docker/apiserver
+          pip install -e .
+
+      - name: Type-check with mypy
+        run: |
           mypy --ignore-missing-imports .
 
       - name: Lint with pylint
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install pylint
-          cd asynch-hash-service/docker/apiserver
-          pip install -r requirements.txt
-          pip install -r test-requirements.txt
           ../../../.pylint.sh .
 
       - name: Tests
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install pytest
-          cd asynch-hash-service/docker/apiserver
-          pip install -r requirements.txt
-          pip install -r test-requirements.txt
-          pip install -e .
           pytest
 
       - name: Coverage
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install coverage pytest
-          cd asynch-hash-service/docker/apiserver
-          pip install -r requirements.txt
-          pip install -r test-requirements.txt
-          pip install -e .
           coverage run -m pytest
           coverage report
