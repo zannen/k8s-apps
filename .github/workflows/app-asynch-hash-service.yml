@@ -47,7 +47,7 @@ jobs:
       - name: Lint with pylint
         run: |
           source .venv/bin/activate
-          ../../../.pylint.sh .
+          bash -xe ../../../.pylint.sh .
 
       - name: Tests
         run: |
