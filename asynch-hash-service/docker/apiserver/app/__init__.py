@@ -124,7 +124,7 @@ def create_app(config: Optional[Dict[str, Any]] = None):
     app.logger.setLevel(log_level)
 
     redis_queue_name, redis_conn = setup_redis(app)
-    db = setup_db(app)
+    # setup_db(app)
 
     token_signing_pwd = os.environ.get("TOKEN_SIGNING_PASSWORD", "secret")
 
