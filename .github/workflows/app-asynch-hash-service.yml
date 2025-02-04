@@ -33,27 +33,29 @@ jobs:
         run: |
           sudo apt update
           sudo env DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends python3-pip python3-virtualenv
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
+          virtualenv .venv
+          source .venv/bin/activate
           pip install -r requirements.txt
           pip install -r test-requirements.txt
           pip install -e .
 
       - name: Type-check with mypy
         run: |
+          source .venv/bin/activate
           mypy --ignore-missing-imports .
 
       - name: Lint with pylint
         run: |
+          source .venv/bin/activate
           ../../../.pylint.sh .
 
       - name: Tests
         run: |
+          source .venv/bin/activate
           pytest
 
       - name: Coverage
         run: |
+          source .venv/bin/activate
           coverage run -m pytest
           coverage report
