@@ -1,8 +1,6 @@
 # Kubernetes Sample Applications
 
-## Redis Queue HPA
-
-Use a Kubernetes custom metric to enable the Kubernetes Horizontal Pod Autoscaler (HPA) to scale based on redis queue length plus busy worker count. See [`redis-queue-hpa`](/redis-queue-hpa/).
+This repo contains various sample Kubernetes applications, in increasing order of complexity.
 
 ## Simple webserver
 
@@ -19,3 +17,7 @@ Implement a database server with persistent storage. See [`database`](/database/
 ## A webserver with a CronJob
 
 Implement a webserver with a CronJob that updates a webpage. See [`cronjob`](/cronjob/).
+
+## Redis Queue HPA
+
+Use a Kubernetes custom metric to enable the Kubernetes Horizontal Pod Autoscaler (HPA) to scale based on redis queue length plus busy worker count. See [`redis-queue-hpa`](/redis-queue-hpa/).

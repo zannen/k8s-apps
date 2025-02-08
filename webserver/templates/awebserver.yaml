@@ -18,7 +18,9 @@ spec:
     spec:
       containers:
         - name: awebserver
+          # Use the container version pulled from values.yaml
           image: "zannen/webserver:{{.Values.webserverVersion}}"
+          # Never pull the container, because it's already available locally - see Makefile and README.md.
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -26,6 +28,7 @@ spec:
             httpGet:
               path: /
               port: 80
+            # Give the container 6*10 seconds to finish starting.
             failureThreshold: 6
             periodSeconds: 10
           livenessProbe:
@@ -49,6 +52,7 @@ spec:
       targetPort: 80   # in container
       port: 8880       # across cluster on ClusterIP
       nodePort: 30880  # from outside cluster
+  # selector: Set which Pods this Service direct traffic to
   selector:
     app: atestapp-webserver
   type: NodePort
