@@ -1,8 +1,9 @@
 .coverage
 htmlcov
-*-secret.yaml
 .mypy_cache
 output
 __pycache__
 .pylint.json
 .pytest_cache
+*-secret.yaml
+.venv

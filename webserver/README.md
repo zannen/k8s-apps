@@ -2,8 +2,7 @@
 
 This app is a simple Kubernetes webserver, using:
 
-* one nginx webserver with one static page
-* one Deployment, with one ReplicaSet, with one Pod
+* one Deployment, containing one ReplicaSet, containing one Pod, containing one nginx webserver, containing one static webpage
 * one Service of type NodePort, with the following ports:
   * 80 - `targetPort`, accessible from inside the webserver docker container
   * 8880 - `port`, accessible from across cluster on the ClusterIP
@@ -14,9 +13,13 @@ This app is a simple Kubernetes webserver, using:
 Get a minikube VM started, then:
 
 ```shell
-# Point your shell to minikube's docker-daemon:
+# Point your shell to minikube's docker-daemon
 eval $(minikube docker-env)
 
+# Build the webserver container
+make docker
+
+# Install the app
 helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace -f values.yaml
 ```
 
@@ -54,10 +57,10 @@ docker exec "$ws" curl -s http://localhost:80/ # use "containerPort"
 
 # Upgrading with helm
 
-Remember to bump the chart version in `Chart.yaml`, then:
+Remember to bump `webserverVersion` in `values.yaml` and the chart version in `Chart.yaml`, then:
 
 ```shell
-helm upgrade atestapp . -n YOUR_NAMESPACE_HERE
+helm upgrade atestapp . -n YOUR_NAMESPACE_HERE -f values.yaml
 ```
 
 # Uninstalling with helm
