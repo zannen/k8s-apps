@@ -15,7 +15,7 @@ customMetrics:
 
 dbPassword: base64-encoded-data
 
-apiserverVersion: "0.0.11"
-metricsexporterVersion: "0.0.3"
+apiserverVersion: "0.0.1"
+metricsexporterVersion: "0.0.2"
 
 redisQueue: dazzle

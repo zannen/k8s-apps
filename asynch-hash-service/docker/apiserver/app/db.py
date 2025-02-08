@@ -26,7 +26,7 @@ class Base(DeclarativeBase):
     """
 
 
-class Data(Base):
+class HashResults(Base):
     """
     The one and only table, for storing and retrieving data.
     """
@@ -34,7 +34,7 @@ class Data(Base):
     __tablename__ = "data"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    info: Mapped[str] = mapped_column(String(30))
+    owner_id: Mapped[str] = mapped_column(String(36))  # UUID
 
     def __repr__(self) -> str:
         return f"Data(id={self.id!r}, info='{self.info!r}')"

@@ -45,6 +45,8 @@ def create_metrics_exporter_app(config: Optional[Dict[str, Any]] = None):
     This function is called by gunicorn and creates a Flask app.
     """
     app = flask.Flask(__name__)
+    if config is None:
+        config = {}
     app.config.update(config)
 
     log_level = os.environ.get("LOGLEVEL", "INFO")

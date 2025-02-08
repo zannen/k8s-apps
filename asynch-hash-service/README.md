@@ -15,7 +15,7 @@ eval $(minikube docker-env)
 # Build containers:
 make docker
 
-helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace
+helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace -f values.yaml -f vaues-custom-secret.yaml
 ```
 
 # Adding some data
@@ -41,7 +41,7 @@ curl "http://$(minikube ip):30880/data/1"  # "1" is the ID from above
 Remember to bump the chart version in `Chart.yaml`, then:
 
 ```shell
-helm upgrade atestapp . -n YOUR_NAMESPACE_HERE
+helm upgrade atestapp . -n YOUR_NAMESPACE_HERE -f values.yaml -f vaues-custom-secret.yaml
 ```
 
 # Uninstalling with helm
