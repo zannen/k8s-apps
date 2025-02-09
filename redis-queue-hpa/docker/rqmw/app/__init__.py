@@ -3,11 +3,10 @@ Provide a Flask app
 """
 
 import collections
-import datetime
 import logging
 import os
 import time
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 import flask
 import redis
