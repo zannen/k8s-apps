@@ -1,9 +1,5 @@
 ---
 customMetrics:
-  apiServer:
-    # The apiserver NodePort must be unique in the cluster.
-    port: 32000
-
   apiService:
     # There can be only one custom metrics APIService in the cluster.
     # Set deploy=true for the first deployment, otherwise set deploy=false.
@@ -17,4 +13,6 @@ customMetrics:
   servingCert: base64-encoded-data
   servingKey: base64-encoded-data
 
-rqmwVersion: "0.0.2"
+# docker container versions to build (see Makefile) and use (see templates/*.yaml)
+metricsexporterVersion: "0.0.3"
+rqmwVersion: "0.0.3"  # redis-queue-monitor-worker

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rq-worker
-          image: "zannen/redis-queue-monitor-worker:{{.Values.rqmwVersion}}"
+          image: "zannen/rqmw:{{.Values.rqmwVersion}}"  # redis queue monitor worker
           imagePullPolicy: Never
           command:
             - rq

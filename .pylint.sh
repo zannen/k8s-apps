@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Run pylint, collect output as json
-pylint --exit-zero --persistent=no -f json "$@" >.pylint.json
+cfg="$(dirname "$(realpath "$0")")/.pylintrc"
+pylint -v --rcfile "$cfg" --exit-zero --persistent=no -f json "$@" >.pylint.json
 
 jqcmd="[.[]|select(.type==\$x)]|length"
 fatals="$(jq --arg x fatal "$jqcmd" .pylint.json)"
@@ -21,7 +22,7 @@ max_usage=0
 code=0
 if [[ "$fatals" -gt "$max_fatal" || "$errors" -gt "$max_error" || "$warnings" -gt "$max_warning" || "$refactors" -gt "$max_refactor" || "$conventions" -gt "$max_convention"  || "$usages" -gt "$max_usage" ]] ; then
 	code=1
-	pylint --exit-zero --persistent=no "$@"
+	pylint --rcfile "$cfg" --exit-zero --persistent=no "$@"
 fi
 
 echo

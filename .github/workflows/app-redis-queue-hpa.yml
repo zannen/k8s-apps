@@ -1,0 +1,61 @@
+---
+
+name: App - redis-queue-hpa
+
+"on":
+  pull_request:
+    branches:
+      - develop
+      - main
+    paths:
+      - 'redis-queue-hpa/**'
+
+jobs:
+
+  metricsexporter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./redis-queue-hpa/docker/metricsexporter
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install packages and virtualenv
+        run: |
+          sudo apt update
+          sudo env DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends python3-pip python3-virtualenv
+          virtualenv /tmp/venv
+          source /tmp/venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r test-requirements.txt
+
+      - name: Type-check with mypy
+        run: |
+          source /tmp/venv/bin/activate
+          mypy --ignore-missing-imports .
+
+      - name: Lint with pylint
+        run: |
+          source /tmp/venv/bin/activate
+          ../../../.pylint.sh .
+
+      - name: Tests
+        run: |
+          source /tmp/venv/bin/activate
+          pip install -e .
+          pytest
+
+      - name: Coverage
+        run: |
+          source /tmp/venv/bin/activate
+          coverage run -m pytest
+          coverage report

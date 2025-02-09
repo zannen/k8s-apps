@@ -18,19 +18,27 @@ Then copy the last part of the output (after `--- 8< ---`) into `values-custom-s
 # Point your shell to minikube's docker-daemon:
 eval $(minikube docker-env)
 
-# Build the custom docker container used for:
-# - custom metrics API server
-# - API server
-# - rq worker
+# Build the custom docker containers used for:
+# - metrics exporter API server
+# - API server and rq worker
 make docker
 
 helm install suihei . -n YOUR_NAMESPACE_HERE --create-namespace -f values.yaml -f values-custom.yaml -f values-custom-secret.yaml
+```
+
+# Upgrading with helm
+
+Remember to bump the chart version in `Chart.yaml`, then:
+
+```shell
+helm upgrade atestapp . -n YOUR_NAMESPACE_HERE -f values.yaml -f values-custom.yaml -f values-custom-secret.yaml
 ```
 
 # Uninstalling with helm
 
 ```shell
 helm uninstall -n YOUR_NAMESPACE_HERE suihei
+kubectl delete namespace YOUR_NAMESPACE_HERE
 ```
 
 # Kubernetes custom metrics
@@ -109,10 +117,6 @@ helm uninstall -n YOUR_NAMESPACE_HERE suihei
   }
   ```
 
-# Ports
-
-- `32000`: apiserver (see `.customMetrics.apiServer.port` in [`values.yaml`](/values.yaml))
-
 # URLs
 
 Use `ip="$(minikube ip)"` to get the IP address of the cluster.
@@ -137,6 +141,15 @@ Use `ip="$(minikube ip)"` to get the IP address of the cluster.
     }
   }
   ```
+
+# Running Python app tests
+
+```shell
+cd docker/metricsexporter
+
+# Run all static analysis (flake8, black, isort, mypy, pylint. Then run pytest
+../../../.python-app-tests.sh metricsexporter
+```
 
 # Troubleshooting
 
