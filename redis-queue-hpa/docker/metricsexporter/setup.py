@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="App",
-    version="n/a, see values.yaml",
+    version="0.0.0",  # see values.yaml
     author="ZanNen",
     author_email="",
     url="https://github.com/zannen/k8s-apps",
