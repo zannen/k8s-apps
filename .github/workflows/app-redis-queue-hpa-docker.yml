@@ -31,12 +31,19 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install packages
+        run: |
+          sudo apt update
+          sudo env DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends python3-pip python3-virtualenv
+
       - name: Get image version for docker tag
         id: getv
         run: |
           cd redis-queue-hpa/docker/metricsexporter
+          virtualenv /tmp/venv
+          source /tmp/venv/bin/activate
+          pip install PyYAML==6.0.2
           python getversion.py >> "$GITHUB_OUTPUT"
-
 
   metricsexporter-docker:
     needs: metricsexporter-getversion
