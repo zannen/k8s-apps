@@ -1,4 +1,4 @@
-FROM python:3.12-alpine
+FROM python:3.14-alpine
 RUN addgroup -g 1000 runner && adduser -g Runner -D -G runner -u 1000 runner
 USER runner
 WORKDIR /home/runner
