@@ -14,7 +14,32 @@ name: App - redis-queue-hpa - push to DockerHub
 
 jobs:
 
+  metricsexporter-getversion:
+    # if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    outputs:
+      version: ${{ steps.getv.outputs.version }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get image version for docker tag
+        id: getv
+        run: |
+          cd redis-queue-hpa/docker/metricsexporter
+          python getversion.py >> "$GITHUB_OUTPUT"
+
+
   metricsexporter-docker:
+    needs: metricsexporter-getversion
     # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
@@ -35,15 +60,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Get image version for docker tag
-        id: fetchversion
-        run: |
-          cd redis-queue-hpa/docker/metricsexporter
-          python getversion.py >> "$GITHUB_OUTPUT"
-
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:redis-queue-hpa/docker/metricsexporter"
           push: true
-          tags: "${{ vars.DOCKER_USERNAME }}/metricsexporter:${{ steps.fetchversion.outputs.version }}"
+          tags: "${{ vars.DOCKER_USERNAME }}/metricsexporter:${{ needs.metricsexporter-getversion.outputs.version }}"
