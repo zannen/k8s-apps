@@ -7,15 +7,15 @@ name: App - redis-queue-hpa - push to DockerHub
     branches:
       - develop
       - main
-    # types:
-    #   - closed
+    types:
+      - closed
     paths:
       - 'redis-queue-hpa/docker/metricsexporter/**'
 
 jobs:
 
   metricsexporter-getversion:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -47,7 +47,7 @@ jobs:
 
   metricsexporter-docker:
     needs: metricsexporter-getversion
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       matrix:
