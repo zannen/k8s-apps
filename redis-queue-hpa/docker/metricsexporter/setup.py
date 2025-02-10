@@ -1,10 +1,8 @@
 import setuptools
 
-VERSION = "0.0.1"
-
 setuptools.setup(
     name="App",
-    version=VERSION,
+    version="0.0.0",  # see values.yaml
     author="ZanNen",
     author_email="",
     url="https://github.com/zannen/k8s-apps",
