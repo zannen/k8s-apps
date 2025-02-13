@@ -30,30 +30,21 @@ jobs:
         run: |
           sudo apt update
           sudo env DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends python3-pip python3-virtualenv
+          virtualenv /tmp/venv
+          source /tmp/venv/bin/activate
+          pip install -r test-requirements.txt
 
       - name: Lint with flake8
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install flake8
+          source /tmp/venv/bin/activate
           flake8 .
 
       - name: Lint with black
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install black
+          source /tmp/venv/bin/activate
           black --check .
 
       - name: Lint with isort
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install isort
+          source /tmp/venv/bin/activate
           isort --check .

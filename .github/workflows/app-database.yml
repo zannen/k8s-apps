@@ -12,8 +12,11 @@ name: App - Database
 
 jobs:
 
-  build:
+  python:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./database/docker/database
     strategy:
       matrix:
         python-version: ["3.12"]
@@ -26,56 +29,33 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install packages
+      - name: Install packages and virtualenv
         run: |
           sudo apt update
           sudo env DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends python3-pip python3-virtualenv
+          virtualenv /tmp/venv
+          source /tmp/venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r test-requirements.txt
 
       - name: Type-check with mypy
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install mypy types-requests
-          cd database/docker/apiserver
+          source /tmp/venv/bin/activate
           mypy --ignore-missing-imports .
 
       - name: Lint with pylint
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install pylint
-          cd database/docker/apiserver
-          pip install -r requirements.txt
-          pip install -r test-requirements.txt
+          source /tmp/venv/bin/activate
           ../../../.pylint.sh .
 
       - name: Tests
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install pytest
-          cd database/docker/apiserver
-          pip install -r requirements.txt
-          pip install -r test-requirements.txt
+          source /tmp/venv/bin/activate
           pip install -e .
           pytest
 
       - name: Coverage
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
-          pip install coverage pytest
-          cd database/docker/apiserver
-          pip install -r requirements.txt
-          pip install -r test-requirements.txt
-          pip install -e .
+          source /tmp/venv/bin/activate
           coverage run -m pytest
           coverage report

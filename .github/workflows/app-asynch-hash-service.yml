@@ -12,7 +12,7 @@ name: App - Asynch Hash Service
 
 jobs:
 
-  apiserver:
+  python:
     runs-on: ubuntu-latest
     defaults:
       run:
