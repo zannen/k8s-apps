@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: apiserver
-          image: "zannen/redis-queue-monitor-worker:{{.Values.rqmwVersion}}"
+          image: "zannen/rqmw:{{.Values.rqmwVersion}}"  # redis queue monitor worker
           imagePullPolicy: Never
           command:
             - gunicorn
@@ -43,9 +43,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: {{.Values.customMetrics.apiServer.port}}
-      nodePort: {{.Values.customMetrics.apiServer.port}}
-      protocol: TCP
-      targetPort: 2000
+    - protocol: TCP
+      targetPort: 2000  # in container
+      port: 8880        # across cluster on ClusterIP
+      nodePort: 32000   # from outside cluster
   selector:
     app: apiserver

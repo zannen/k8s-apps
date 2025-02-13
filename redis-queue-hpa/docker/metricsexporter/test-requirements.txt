@@ -1,0 +1,10 @@
+black==24.10.0
+coverage==7.6.10
+flake8==7.1.1
+isort==6.0.0
+mypy==1.14.1
+pylint==3.3.4
+pytest==8.3.4
+PyYAML==6.0.2
+setuptools==75.8.0
+types-PyYAML==6.0.12.20241230

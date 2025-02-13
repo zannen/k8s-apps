@@ -1,2 +1,3 @@
 ---
+# When changing the webserver Dockerfile or web content, bump this version.
 webserverVersion: "0.0.1"

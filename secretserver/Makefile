@@ -1,5 +1,6 @@
 default: docker
 
+# Build a secretserver docker container using the version pulled from values.yaml
 .PHONY: docker
 docker:
 	@img="zannen/secretserver" && \
