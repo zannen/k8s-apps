@@ -34,9 +34,7 @@ jobs:
 
       - name: Lint with yamllint
         run: |
-          tmpdir="$(mktemp -d)"
-          venv="$tmpdir/venv"
-          virtualenv "$venv"
-          source "$venv/bin/activate"
+          virtualenv /tmp/venv
+          source /tmp/venv/bin/activate
           pip install yamllint
           yamllint .
