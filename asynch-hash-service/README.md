@@ -18,23 +18,7 @@ make docker
 helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace -f values.yaml -f vaues-custom-secret.yaml
 ```
 
-# Adding some data
-
-```shell
-curl -XPOST -H 'Content-type: application/json' --data '{"info":"TEST_DATA"}' "http://$(minikube ip):30880/data"
-```
-```json
-{"error":null,"id":1,"info":"TEST_DATA"}
-```
-
-# Getting some data
-
-```shell
-curl "http://$(minikube ip):30880/data/1"  # "1" is the ID from above
-```
-```json
-{"error":null,"id":1,"info":"TEST_DATA"}
-```
+************************TBD
 
 # Upgrading with helm
 
@@ -54,3 +38,13 @@ kubectl delete namespace YOUR_NAMESPACE_HERE
 minikube ssh
 sudo rm -rf /mnt/data  # from hostPath of mysql-pv-volume.
 ```
+
+# Running Python app tests
+
+```shell
+cd docker/apiserver
+
+# Run all static analysis (flake8, black, isort, mypy, pylint. Then run pytest
+../../../.python-app-tests.sh apiserver
+```
+

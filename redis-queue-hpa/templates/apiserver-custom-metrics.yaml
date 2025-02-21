@@ -1,4 +1,3 @@
-# See /licensing.md for licence details.
 ---
 apiVersion: v1
 kind: Secret
@@ -28,6 +27,7 @@ spec:
     spec:
       containers:
         - name: custom-metrics-apiserver
+          # Image published as oreandawe/metricsexporter:TAG
           image: "zannen/metricsexporter:{{.Values.metricsexporterVersion}}"
           imagePullPolicy: Never
           command:
@@ -42,6 +42,9 @@ spec:
             - --certfile
             - /var/run/serving-cert/serving.crt
             - app:create_metrics_exporter_app()
+          env:
+            - name: REDIS_URL
+              value: "redis://redis-server.{{ .Release.Namespace }}.svc.cluster.local:6379"
           ports:
             - containerPort: 6443
           volumeMounts:

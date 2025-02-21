@@ -44,9 +44,10 @@ metadata:
     app: atestapp
 spec:
   ports:
-    - port: 3306
-      protocol: TCP
-      targetPort: 3306
+    - protocol: TCP
+      targetPort: 3306  # in container
+      port: 3306        # across cluster on ClusterIP
+      # nodePort        # from outside cluster
   selector:
     app: dbserver
   type: ClusterIP

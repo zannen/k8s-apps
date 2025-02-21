@@ -42,7 +42,7 @@ while true ; do
 		echo "$response" | jq .
 		break
 	else
-		nonce="$(echo "$response" | jq -r .job.meta.nonce)"
+		nonce="$(echo "$response" | jq -r .job.extra.nonce)"
 		echo "$nonce ..."
 		if [[ "$nonce" == null ]] ; then
 			echo "$response"
