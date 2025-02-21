@@ -24,4 +24,4 @@ Use a Kubernetes custom metric to enable the Kubernetes Horizontal Pod Autoscale
 
 ## Asynchronous Hash App
 
-Implement an app that calculates hashes asynchronously. See [`asynch-hash-service`](/asynch-hash-service/).
+Implement an app that calculates hashes asynchronously. See [`async-hash-service`](/async-hash-service/).
