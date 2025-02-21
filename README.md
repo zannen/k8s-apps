@@ -21,3 +21,7 @@ Implement a webserver with a CronJob that updates a webpage. See [`cronjob`](/cr
 ## Redis Queue HPA
 
 Use a Kubernetes custom metric to enable the Kubernetes Horizontal Pod Autoscaler (HPA) to scale based on redis queue length plus busy worker count. See [`redis-queue-hpa`](/redis-queue-hpa/).
+
+## Asynchronous Hash App
+
+Implement an app that calculates hashes asynchronously. See [`asynch-hash-service`](/asynch-hash-service/).

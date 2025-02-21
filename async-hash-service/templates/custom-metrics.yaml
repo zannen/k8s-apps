@@ -27,9 +27,9 @@ spec:
     spec:
       containers:
         - name: custom-metrics-apiserver
-          # Image published as oreandawe/metricsexporter:TAG
-          image: "zannen/metricsexporter:{{.Values.metricsexporterVersion}}"
-          imagePullPolicy: Never
+          # https://github.com/zannen/k8s-apps/tree/main/redis-queue-hpa/docker/metricsexporter
+          image: oreandawe/metricsexporter:0.0.3
+          imagePullPolicy: IfNotPresent
           command:
             - gunicorn
             - --bind

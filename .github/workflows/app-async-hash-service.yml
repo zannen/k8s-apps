@@ -1,6 +1,6 @@
 ---
 
-name: App - Database
+name: App - Asynch Hash Service
 
 "on":
   pull_request:
@@ -8,7 +8,7 @@ name: App - Database
       - develop
       - main
     paths:
-      - 'database/**'
+      - 'async-hash-service/**'
 
 jobs:
 
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./database/docker/database
+        working-directory: ./async-hash-service/docker/apiserver
     strategy:
       matrix:
         python-version: ["3.12"]
