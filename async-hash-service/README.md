@@ -1,8 +1,6 @@
 # A Kubernetes asynchronous hash app
 
-This is a Kubernetes app that handles job requests for calculating hashes, using:
-
-* TBD
+This is a Kubernetes app that handles job requests for calculating hashes.
 
 # Installing with helm
 
@@ -18,7 +16,21 @@ make docker
 helm install atestapp . -n YOUR_NAMESPACE_HERE --create-namespace -f values.yaml -f vaues-custom-secret.yaml
 ```
 
-************************TBD
+# Create a token, create a job, get the job result
+```shell
+base="http://$(minikube ip):30880"
+
+token="$(curl --silent -XPOST -H 'Content-type: application/json' --data {} "$base/token" | jq -r .token)"
+echo "Token: $token"
+
+job_id="$(curl --silent -XPOST -H "API-Key: $token" -H 'Content-type: application/json' --data '{"data":"test", "hexzeros": 3}' "$base/jobs" | jq -r .job.id)"
+echo "Created a job: $job_id"
+
+# Some time later
+curl --silent -XGET -H "API-Key: $token" "$base/jobs/$job_id" | jq .
+```
+
+See `live_test.sh` for an expanded version of the above script.
 
 # Upgrading with helm
 

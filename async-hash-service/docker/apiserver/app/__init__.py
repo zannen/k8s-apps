@@ -15,7 +15,7 @@ import jwt
 import redis
 import rq
 
-TOKEN_ISSUER = "urn:github/zannen/k8s-apps/asynch-hash-service"
+TOKEN_ISSUER = "urn:github/zannen/k8s-apps/async-hash-service"
 
 
 def get_redis_queue(queue_name: str, conn):

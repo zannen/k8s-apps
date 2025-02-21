@@ -8,7 +8,7 @@ name: App - Asynch Hash Service
       - develop
       - main
     paths:
-      - 'asynch-hash-service/**'
+      - 'async-hash-service/**'
 
 jobs:
 
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./asynch-hash-service/docker/apiserver
+        working-directory: ./async-hash-service/docker/apiserver
     strategy:
       matrix:
         python-version: ["3.12"]

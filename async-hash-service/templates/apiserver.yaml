@@ -30,14 +30,6 @@ spec:
             - --capture-output
             - app:create_app()
           env:
-            # Database
-            - name: DB_URL
-              value: "mysql+mysqldb://root@db.{{.Release.Namespace}}.svc.cluster.local:3306"
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: atestapp-passwords
-                  key: dbPassword
             # Redis
             - name: REDIS_URL
               value: "redis://redis-server.{{ .Release.Namespace }}.svc.cluster.local:6379"
